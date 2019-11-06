@@ -1,10 +1,15 @@
 from SublimeLinter.lint import Linter  # or NodeLinter, PythonLinter, ComposerLinter, RubyLinter
+import sys
 
-
-class __class__(Linter):
-    cmd = '__cmd__'
-    regex = r''
-    multiline = False
+class Ghcid(Linter):
+    regex = r'\"start\":\[(?P<line>\d+),(?P<col>\d+)\],.*\"message\":\"(?P<message>.*)\"'
+    multiline = True
     defaults = {
-        'selector': 'source.python'
+        'selector': 'source.haskell'
     }
+
+    def cmd(self):
+      if sys.platform.startswith("win32"):
+        return ["cmd.exe", "/c", "type", "%TEMP%\\ghcid.json"]
+      else:
+        return ["cat", "/tmp/ghcid.json"]
