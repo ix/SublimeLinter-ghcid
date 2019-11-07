@@ -13,3 +13,7 @@ class Ghcid(Linter):
         return ["cmd.exe", "/c", "type", "%TEMP%\\ghcid.json"]
       else:
         return ["cat", "/tmp/ghcid.json"]
+
+    def split_match(self, match):
+      match, line, col, error, warning, message, near = super().split_match(match)
+      return match, line, col, error, warning, message, near  
